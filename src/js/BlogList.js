@@ -19,6 +19,15 @@ export class BlogList {
         this.page = 1;
         this.perPage = 10;
 
+        // Cache storage
+        this.cache = new Map();
+        this.cacheExpiry = 5 * 60 * 1000; // 5 minutes
+
+        // Current state
+        this.currentSort = '';
+        this.currentFilter = '';
+        this.currentSearch = '';
+
         // Bind handlers
         this.onSortChange = this.onSortChange.bind(this);
         this.onFilterChange = this.onFilterChange.bind(this);
@@ -39,13 +48,49 @@ export class BlogList {
     }
 
     async fetchData() {
-        // TODO (candidate): add basic caching and retry logic
-        const res = await fetch(this.apiUrl);
-        if (!res.ok) throw new Error('Failed to fetch blogs');
-        const data = await res.json();
-        if (!Array.isArray(data)) throw new Error('Unexpected API response');
-        this.items = data;
-        this.filteredItems = [...data];
+        try {
+            // Check cache first
+            const cachedData = this.cache.get(this.apiUrl);
+            if (cachedData && Date.now() - cachedData.timestamp < this.cacheExpiry) {
+                this.items = cachedData.data;
+                this.filteredItems = [...cachedData.data];
+                return;
+            }
+
+            // Fetch with retry logic
+            let retries = 3;
+            let lastError;
+
+            while (retries > 0) {
+                try {
+                    const res = await fetch(this.apiUrl);
+                    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                    const data = await res.json();
+                    
+                    if (!Array.isArray(data)) throw new Error('Unexpected API response');
+                    
+                    // Store in cache
+                    this.cache.set(this.apiUrl, {
+                        data,
+                        timestamp: Date.now()
+                    });
+
+                    this.items = data;
+                    this.filteredItems = [...data];
+                    return;
+                } catch (error) {
+                    lastError = error;
+                    retries--;
+                    if (retries > 0) {
+                        await new Promise(resolve => setTimeout(resolve, 1000 * (3 - retries)));
+                    }
+                }
+            }
+            
+            throw lastError;
+        } catch (error) {
+            throw new Error(`Failed to fetch blogs: ${error.message}`);
+        }
     }
 
     setupEventListeners() {
@@ -70,25 +115,89 @@ export class BlogList {
         }
     }
 
-    // TODO (candidate): implement sorting
     onSortChange(e) {
         const by = e.target.value;
-        // Implement sorting by: date, reading_time, category
-        // After sorting, reset page to 1 and call this.render()
+        this.currentSort = by;
+        
+        if (by) {
+            this.filteredItems.sort((a, b) => {
+                switch (by) {
+                    case 'date':
+                        return new Date(b.published_date) - new Date(a.published_date);
+                    case 'reading_time':
+                        return parseInt(b.reading_time) - parseInt(a.reading_time);
+                    case 'category':
+                        return a.category.localeCompare(b.category);
+                    default:
+                        return 0;
+                }
+            });
+        }
+        
+        this.page = 1;
+        this.render();
     }
 
-    // TODO (candidate): implement filtering
     onFilterChange(e) {
-        const val = e.target.value; // Gadgets | Startups | Writing | ''
-        // Filter this.items by category or tags to create this.filteredItems
-        // After filtering, reset page to 1 and call this.render()
+        const val = e.target.value;
+        this.currentFilter = val;
+        
+        if (val) {
+            this.filteredItems = this.items.filter(item => {
+                return item.category === val || (item.tags && item.tags.includes(val));
+            });
+        } else {
+            this.filteredItems = [...this.items];
+        }
+
+        // Reapply current search if exists
+        if (this.currentSearch) {
+            this.filteredItems = this.filteredItems.filter(item =>
+                item.title.toLowerCase().includes(this.currentSearch)
+            );
+        }
+
+        // Reapply current sort if exists
+        if (this.currentSort) {
+            this.onSortChange({ target: { value: this.currentSort } });
+        }
+        
+        this.page = 1;
+        this.render();
     }
 
-    // TODO (candidate): implement search by title
     onSearchInput(e) {
         const q = (e.target.value || '').toLowerCase();
-        // Filter by title (and optionally content) using q
-        // After filtering, reset page to 1 and call this.render()
+        this.currentSearch = q;
+        
+        if (q) {
+            this.filteredItems = this.items.filter(item =>
+                item.title.toLowerCase().includes(q)
+            );
+            
+            // Reapply current filter if exists
+            if (this.currentFilter) {
+                this.filteredItems = this.filteredItems.filter(item =>
+                    item.category === this.currentFilter || 
+                    (item.tags && item.tags.includes(this.currentFilter))
+                );
+            }
+            
+            // Reapply current sort if exists
+            if (this.currentSort) {
+                this.onSortChange({ target: { value: this.currentSort } });
+            }
+        } else {
+            this.filteredItems = [...this.items];
+            
+            // Reapply current filter if exists
+            if (this.currentFilter) {
+                this.onFilterChange({ target: { value: this.currentFilter } });
+            }
+        }
+        
+        this.page = 1;
+        this.render();
     }
 
     showLoading() {
