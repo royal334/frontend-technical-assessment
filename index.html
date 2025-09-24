@@ -10,9 +10,10 @@
 
 <body>
     <header>
-        <nav class="nav">
+        <nav class="nav" role="navigation">
             <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-list">
-                <span class="hamburger"></span>
+                <span class="hamburger" aria-hidden="true"></span>
+                <span class="visually-hidden">Menu</span>
             </button>
             <ul id="nav-list" class="nav-list">
                 <li><a href="#nav-section" class="nav-link">Navigation</a></li>
@@ -22,6 +23,9 @@
         </nav>
     </header>
     <main>
+        <h1>Navigation Component</h1>
+        <p>This demonstration of a sticky navigation with intersectionObserver. </p>
+        <div><p>Scroll to see the navigtion update and highlight the current section</p></div>
     </main>
     <script type="module" src="src/js/main.js"></script>
 </body>
