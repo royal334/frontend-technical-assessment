@@ -2,6 +2,8 @@
 :root {
     --primary-color: #2c3e50;
     --secondary-color: #3498db;
+    --border-color: #e0e0e0;
+    --drop-zone-bg: #f8f8f8;
     --accent-color: #e74c3c;
     --text-color: #333333;
     --border-color: #dddddd;
@@ -17,122 +19,239 @@
 /* Basic Reset */
 * {
     margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    padding: 20px;
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: #ffffff;
 }
 
-body {
-    font-family: system-ui, sans-serif;
-    line-height: 1.6;
-    color: var(--text-color);
-}
-
-/* Base Styles */
-.container {
-    width: 100%;
-    max-width: var(--large-desktop);
+.content-section {
+    max-width: 800px;
     margin: 0 auto;
-    padding: 0 var(--spacing);
+    padding: 20px;
 }
 
-/* Navigation Component - Responsive Requirements:
- * Mobile (< 480px):
- * - Stack navigation items vertically
- * - Show hamburger menu
- * - Hide nav-list by default
- * - Add slide-in animation for menu
- *
- * Tablet (768px - 1023px):
- * - Show navigation items in a row
- * - Remove hamburger menu
- * - Adjust padding and spacing
- *
- * Desktop (≥ 1024px):
- * - Enhanced hover states
- * - Sticky navigation
- */
+/* Blog List Styles */
+.blog-list-container {
+    margin-top: 20px;
+    border: #e0e0e0 solid 2px;
+    border-radius: 12px;
+    padding: 1rem;
+}
 
-/* Drag & Drop Component - Responsive Requirements:
- * Mobile (< 480px):
- * - Stack drop zones vertically
- * - Larger touch targets
- * - Full-width items
- *
- * Tablet (768px - 1023px):
- * - 2x2 grid for drop zones
- * - Maintain aspect ratio
- *
- * Desktop (≥ 1024px):
- * - Side-by-side layout
- * - Hover effects
- * - Drag previews
- */
+.blog-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    align-items: center;
+}
 
-/* Blog List Component - Responsive Requirements:
- * Mobile (< 480px):
- * - Single column layout
- * - Stack all elements
- * - Compact view
- * 
- * Tablet (768px - 1023px):
- * - 2 column grid
- * - Responsive images
- * - Show/hide certain metadata
- *
- * Desktop (≥ 1024px):
- * - 3 column grid
- * - Hover states
- * - Enhanced animations
- */
+.sort-select,
+.filter-select {
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: white;
+    font-size: 14px;
+    min-width: 120px;
+    cursor: pointer;
+}
 
-/* Content Sections - Responsive Requirements:
- * Mobile (< 480px):
- * - Full-width sections
- * - Increased text size
- * - Stack all content
- *
- * Tablet (768px - 1023px):
- * - Balanced padding
- * - 2-column where appropriate
- *
- * Desktop (≥ 1024px):
- * - Max-width container
- * - Enhanced spacing
- */
+.search-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 14px;
+}
 
-/* TODO: Implement Components */
+.content-section h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--primary-color);
+}
 
-/* Navigation
-.nav {}
-.nav-list {}
-.nav-link {}
-.nav-toggle {}
-*/
+.blog-item {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    transition: box-shadow 0.2s ease;
+    display: flex;
+    gap: 20px;
+}
 
-/* Drag & Drop
-.drag-drop-container {}
-.draggable-list {}
-.draggable-item {}
-.drag-handle {}
-.drop-zones {}
-.drop-zone {}
-*/
+.blog-item:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
 
-/* Blog List
-.blog-list-container {}
-.blog-list-viewport {}
-.blog-list-content {}
-.blog-item {}
-.blog-title {}
-.blog-card {}
-.blog-card-image {}
-.blog-card-content {}
-.blog-card-meta {}
-*/
+.blog-image-container {
+    flex: 0 0 100px;
+}
 
-/* Utility Classes
-.loading {}
-.error {}
-.active {}
-.dragging {}
-*/
+.blog-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.blog-content {
+    flex: 1;
+}
+
+.blog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.blog-title {
+    margin: 0;
+    font-size: 18px;
+    color: var(--primary-color);
+    font-weight: 600;
+    flex: 1;
+    padding-right: 16px;
+}
+
+.blog-meta {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #666;
+}
+
+.blog-author,
+.blog-date,
+.blog-reading-time {
+    display: flex;
+    align-items: center;
+}
+
+.blog-reading-time::after {
+    content: " min read";
+}
+
+.blog-excerpt {
+    color: #444;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+    margin-bottom: 16px;
+}
+
+.blog-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.tag {
+    font-size: 12px;
+    color: white;
+    background-color: var(--secondary-color);
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+
+.loading-indicator {
+    text-align: center;
+    padding: 20px;
+    color: var(--secondary-color);
+}
+
+.error-container {
+    color: #e74c3c;
+    padding: 16px;
+    border: 1px solid #e74c3c;
+    border-radius: 4px;
+    margin-bottom: 16px;
+}
+
+.hidden {
+    display: none;
+}
+
+.no-results {
+    text-align: center;
+    color: #666;
+    padding: 32px;
+    font-style: italic;
+}
+
+.drag-drop-container {
+    display: flex;
+    flex-direction: column;
+    border: gray solid 2px;
+    gap: 20px;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.draggable-list {
+    display: flex;
+    flex-direction: column;
+    border: gray solid 2px;
+    border-radius: 12px;
+    padding: 20px;
+    gap: 10px;
+}
+
+.draggable-item {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 15px;
+    cursor: move;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+}
+
+.draggable-item:hover {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.draggable-item.dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+}
+
+.item-content {
+    font-size: 16px;
+    color: var(--primary-color);
+}
+
+.drop-zones {
+    flex: 2;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.drop-zone {
+    height: 200px;
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    background-color: var(--drop-zone-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.drop-zone.drag-over {
+    background-color: rgba(52, 152, 219, 0.1);
+    border-color: var(--secondary-color);
+}
+
+.drop-zone-label {
+    color: #999;
+    font-size: 14px;
+}
