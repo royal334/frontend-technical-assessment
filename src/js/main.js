@@ -1,6 +1,8 @@
-// Entry point - implement your solution here
+import { Navigation } from './navigation.js';
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize your components
+    // Initialize Navigation only on this branch
+    new Navigation();
 });
 
 import { DragDrop } from './dragDrop.js';
