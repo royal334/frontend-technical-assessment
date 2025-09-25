@@ -51,15 +51,21 @@ This is a 48-hour technical assessment focusing on three main components. Basic 
 ## Implementation Summary
 ### Completed Features
 - [List all completed features]
+- Added the drag and drop feature
+- Added sorting, filtering and searching to the blog
+-implemented the desgin as seen in the sent files
 
 ### Pending Items
 - [List any incomplete features]
+-None
 
 ### Technical Challenges
 - [Describe any blockers or issues encountered]
+- Merge and style conflicts
 
 ### AI Usage
 - [List any AI tools used during your implementation]
+- Github copilot
 ```
 
 3. Follow this submision link [Click here](https://forms.gle/1WPuqpcuaWnhaASAA) and provide your email address and the url link to your completed project repository.

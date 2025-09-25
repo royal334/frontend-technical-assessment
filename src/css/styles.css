@@ -2,6 +2,8 @@
 :root {
     --primary-color: #2c3e50;
     --secondary-color: #3498db;
+    --border-color: #e0e0e0;
+    --drop-zone-bg: #f8f8f8;
     --header-height: 60px;
     --header-bg: #ffffff;
     --header-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -10,9 +12,9 @@
 /* Basic Reset */
 * {
     margin: 0;
-    padding: 20px;
+    padding: 0;
+    box-sizing: border-box;
     font-family: system-ui, -apple-system, sans-serif;
-    padding-top: var(--header-height);
 }
 
 /* Header and Navigation Styles */
@@ -25,6 +27,7 @@ header {
     background-color: var(--primary-color);
     transition: box-shadow 0.3s ease;
     z-index: 1000;
+    width: 100%;
 }
 
 header.sticky {
@@ -35,7 +38,7 @@ header.sticky {
     max-width: 1200px;
     height: 100%;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -171,9 +174,10 @@ header.sticky {
         top: var(--header-height);
         left: 0;
         right: 0;
+        width: 100%;
         background: var(--header-bg);
         flex-direction: column;
-        padding: 20px;
+        padding: 16px;
         gap: 10px;
         box-shadow: var(--header-shadow);
         transform: translateY(-100%);
@@ -181,6 +185,7 @@ header.sticky {
         visibility: hidden;
         transition: all 0.3s ease;
         background-color: gray;
+        margin: 0 auto;
     }
 
     .nav-list--visible {
@@ -201,16 +206,25 @@ h1{
     font-size: clamp(2rem, 5vw, 3rem);
 }
 
-h1, p{
+
+.hero-section{
+    margin: 100px;
+    margin-bottom: 80vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.hero-section h1, .hero-section p{
     text-align: center;
 }
 
-p{
+.hero-section p{
     color: var(--primary-color);
     font-size: clamp(1rem, 2.5vw, 1.5rem);
 }
 
-div {
+.nav-div {
     border: #2c3e50 solid 2px;
     border-radius: 10px;
     padding: 0.5rem 1rem;
@@ -222,6 +236,7 @@ div {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
+    margin-bottom: 80vh;
 }
 
 /* Blog List Styles */

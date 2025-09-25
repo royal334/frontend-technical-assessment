@@ -10,24 +10,24 @@
 
 <body>
     <header>
-                <nav class="nav" role="navigation">
+            <nav class="nav" role="navigation">
             <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-list">
                 <span class="hamburger" aria-hidden="true"></span>
                 <span class="visually-hidden">Menu</span>
             </button>
             <ul id="nav-list" class="nav-list">
-                <li><a href="#nav-section" class="nav-link">Navigation</a></li>
+                <li><a href="#hero-section" class="nav-link">Navigation</a></li>
                 <li><a href="#drag-section" class="nav-link">Drag & Drop</a></li>
                 <li><a href="#list-section" class="nav-link">Blog List</a></li>
             </ul>
         </nav>
     </header>
     <main>
-        <div>
+        <section class="hero-section" id="hero-section">
             <h1>Navigation Component</h1>
             <p>This demonstration of a sticky navigation with intersectionObserver. </p>
-            <div><p>Scroll to see the navigtion update and highlight the current section</p></div>
-        </div>
+            <div class="nav-div"><p>Scroll to see the navigtion update and highlight the current section</p></div>
+        </section>
         <section id="drag-section" class="content-section">
             <h2>Drag & Drop Demo</h2>
             <div class="drag-drop-container">
